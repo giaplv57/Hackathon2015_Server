@@ -1,7 +1,7 @@
 <?php
   include("common.php");
-  header("Content-Type:application/json");
-  $receivedRequest = json_decode(file_get_contents('php://input'), true);
+  // header("Content-Type:application/json");
+  $receivedRequest = $_POST;
   $result = array();
 
   if($receivedRequest['action'] === "listAllTag"){
@@ -20,7 +20,7 @@
     $con = ConnectDB();
     $userID = $receivedRequest['userID'];
     mysqli_query($con, "DELETE FROM taglist WHERE userID='$userID'");  
-    foreach ($receivedRequest['data'] as $tagID) {
+    foreach ($receivedRequest['tags'] as $tagID) {
       mysqli_query($con, "INSERT INTO taglist (userID,tagID) VALUES ('$userID','$tagID')");  
     }
     $result['message'] = "success";

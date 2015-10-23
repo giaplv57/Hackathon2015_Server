@@ -22,7 +22,7 @@
     $reference = $eventData['title'];
     $content = $eventData['content'];
     mysqli_query($con, "INSERT INTO events (id,title,content,tagID,time,picture,location,reference) VALUES ('$eventID','$title','$content','$tagID','$time','$picture','$location','$reference')");
-    mysqli_query($con, "INSERT INTO eventList (userID, eventID) VALUES ('$userID','$eventID')");
+    mysqli_query($con, "INSERT INTO eventlist (userID, eventID) VALUES ('$userID','$eventID')");
     $result['message'] = "success";
     $result['eventID'] = $eventID;
     return json_encode($result);
