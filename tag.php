@@ -1,10 +1,3 @@
-<html>
-<head>
-  <title></title>
-  <meta charset="UTF-8">
-</head>
-</html>
-
 <?php
   include("common.php");
   $receivedRequest = json_decode(file_get_contents('php://input'), true);
