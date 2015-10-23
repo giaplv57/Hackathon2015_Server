@@ -1,5 +1,6 @@
 <?php
   include("common.php");
+  header("Content-Type:application/json");
   $receivedRequest = json_decode(file_get_contents('php://input'), true);
   $result = array();
 
