@@ -53,4 +53,14 @@
       @mysqli_close($con) or die("-1"); //CANNOT EXIT DB
       echo json_encode($result);
   }
+
+  if($_POST['action'] === "getUser"){
+    $con = ConnectDB();
+    $userID =$_POST['userID'];
+    $getUser = mysqli_query($con, "SELECT * FROM users WHERE id='$userID'");  
+    $user = mysqli_fetch_array($getUser);
+    $result['status'] = "1";
+    $result['data'] = $user;
+    echo json_encode($result);
+  }
 ?>
