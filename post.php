@@ -35,4 +35,22 @@
     $event = mysqli_fetch_array($getEvent);
     return json_encode($event);
   }
+
+  function getEvents($userID, $page){
+    $con = ConnectDB();
+    $offset = (intval($page)-1) * 10;
+    $getEventIDs = mysqli_query($con, "SELECT eventID FROM `eventlist` WHERE userID='$userID' LIMIT $offset,10");  
+    $result['message'] = "success";
+    while($row = mysqli_fetch_assoc($getEventIDs)){
+      $eventID = $row['eventID'];
+      $getEvent = mysqli_query($con, "SELECT * FROM `events` WHERE id='$eventID'");  
+      $event = mysqli_fetch_array($getEvent);
+      $result['data'][] = $event;
+    }
+    return json_encode($result);
+  }
+
+  if($receivedRequest['action'] === "getEvents"){
+    echo getEvents($receivedRequest['userID'], $receivedRequest['page']);
+  }
 ?>
