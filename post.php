@@ -26,6 +26,7 @@
     $content = $eventData['content'];
     mysqli_query($con, "INSERT INTO events (id,title,content,tagID,time,picture,location,reference) VALUES ('$eventID','$title','$content','$tagID','$time','$picture','$location','$reference')");
     mysqli_query($con, "INSERT INTO eventlist (userID, eventID) VALUES ('$userID','$eventID')");
+    pushGCM($eventID,$title,$tagID);
     //Add to feed
     mysqli_query($con, "INSERT INTO feed (userID, eventID) SELECT userID,'$eventID' FROM taglist WHERE tagID='$tagID'");
     $result['message'] = "success";
@@ -52,3 +53,4 @@
     return json_encode($result);
   }
 ?>
+
