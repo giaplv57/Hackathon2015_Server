@@ -32,6 +32,8 @@
       $content = $eventData->content;
       mysqli_query($con, "INSERT INTO events (id,title,content,tagID,time,picture,location,reference) VALUES ('$eventID','$title','$content','$tagID','$time','$picture','$location','$reference')");
       mysqli_query($con, "INSERT INTO eventlist (userID, eventID) VALUES ('$userID','$eventID')");
+
+      mysqli_query($con, "INSERT INTO feed (userID, eventID) SELECT userID,'$eventID' FROM taglist WHERE tagID='$tagID'");
       $result['message'] = "success";
       $result['eventID'] = $eventID;
       return json_encode($result);

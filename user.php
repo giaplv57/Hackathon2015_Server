@@ -38,10 +38,15 @@
     $checkUser = mysqli_query($con, "SELECT * FROM `users` where username = '$username' AND password = '$password'");
       $row = mysqli_fetch_array($checkUser);
       if(!empty($row['username'])) {
+        $userID = $row['id'];
         $result['status'] = "1";
-        $result['userID'] = $row['id'];
+        $result['userID'] = $userID;
         $result['name'] = $row['name'];
-        $result['topics'] = "";
+        $getTags = mysqli_query($con, "SELECT tagID FROM `taglist` where userID = '$userID'");
+        while($row = mysqli_fetch_assoc($getTags)){
+          $result['tags'][] = $row['tagID'];
+        }
+        $result['avatar'] = "http://z1h4wk.me/otherStuffs/Hackathon2015_Server/media/avatars/".rand(1,11).".jpeg";
       }else{
         $result['status'] = "0"; //NOT FOUND ANY USER
       }
