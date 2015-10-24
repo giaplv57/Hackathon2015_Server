@@ -1,6 +1,6 @@
 <?php
   include("common.php");
-  // header("Content-Type:application/json");
+  header("Content-Type:application/json");
   $receivedRequest = $_POST;
   $result = array();
 

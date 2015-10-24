@@ -7,12 +7,24 @@
   }
 
   function addEvent($eventData){
-    if($eventData->tagID !== null){
+    if($eventData->tagID === null){
+      return;
+    }else{
       $con = ConnectDB();
+      $tagID = $eventData->tagID;
+      if(in_array($tagID, array("3","4","5","6","7","8","9","13"))){
+        $tagID = "".rand(9, 11);
+      }else if(in_array($tagID, array("10","11","12","14","15","16"))){
+        if($tagID == "10") $tagID = "3";
+        if($tagID == "11") $tagID = "4";
+        if($tagID == "12") $tagID = "5";
+        if($tagID == "14") $tagID = "6";
+        if($tagID == "15") $tagID = "7";
+        if($tagID == "16") $tagID = "8";
+      }
       $userID = rand(1,99);
       $eventID = sha1($userID."J4F2015".time());
       $title = $eventData->title;
-      $tagID = $eventData->tagID;
       $time = $eventData->time;
       $picture = $eventData->picture;
       $location = $eventData->location;

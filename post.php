@@ -9,6 +9,9 @@
   if($receivedRequest['action'] === "get"){
     echo getEvent($receivedRequest);
   }
+  if($receivedRequest['action'] === "getEvents"){
+    echo getEvents($receivedRequest['userID'], $receivedRequest['page']);
+  }
 
   function addEvent($eventData){
     $con = ConnectDB();
@@ -23,6 +26,8 @@
     $content = $eventData['content'];
     mysqli_query($con, "INSERT INTO events (id,title,content,tagID,time,picture,location,reference) VALUES ('$eventID','$title','$content','$tagID','$time','$picture','$location','$reference')");
     mysqli_query($con, "INSERT INTO eventlist (userID, eventID) VALUES ('$userID','$eventID')");
+    //Add to feed
+    mysqli_query($con, "INSERT INTO feed (userID, eventID) SELECT userID,'$eventID' FROM taglist WHERE tagID='$tagID'");
     $result['message'] = "success";
     $result['eventID'] = $eventID;
     return json_encode($result);
@@ -39,18 +44,11 @@
   function getEvents($userID, $page){
     $con = ConnectDB();
     $offset = (intval($page)-1) * 10;
-    $getEventIDs = mysqli_query($con, "SELECT eventID FROM `eventlist` WHERE userID='$userID' LIMIT $offset,10");  
     $result['message'] = "success";
-    while($row = mysqli_fetch_assoc($getEventIDs)){
-      $eventID = $row['eventID'];
-      $getEvent = mysqli_query($con, "SELECT * FROM `events` WHERE id='$eventID'");  
-      $event = mysqli_fetch_array($getEvent);
+    $getEvent = mysqli_query($con, "SELECT * FROM `events` WHERE id IN (SELECT eventID FROM `eventlist` WHERE userID='$userID') ORDER BY timestamp LIMIT $offset,10");  
+    while($event = mysqli_fetch_assoc($getEvent)){
       $result['data'][] = $event;
     }
     return json_encode($result);
-  }
-
-  if($receivedRequest['action'] === "getEvents"){
-    echo getEvents($receivedRequest['userID'], $receivedRequest['page']);
   }
 ?>
