@@ -18,22 +18,17 @@
         'to' => "/topics/tagID".$tagID,
         'data' => $msg
     );
-
-    $headers = array(
-        'Authorization: key=AIzaSyCosDg2TpdCOwczc7wAAYiw4Pjx-AFjFDs ',
-        'Content-Type: application/json'
+    $options = array(
+        'http' => array(
+            'header'  => array('Authorization: key=AIzaSyCosDg2TpdCOwczc7wAAYiw4Pjx-AFjFDs ',
+                                'Content-Type: application/json'),
+            'method'  => 'POST',
+            'content' => json_encode($fields),
+        ),
     );
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, 'http://android.googleapis.com/gcm/send');
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-    $result = curl_exec($ch);
-    curl_close($ch);
-    return $result;   
+    $context  = stream_context_create($options);
+    file_get_contents("http://android.googleapis.com/gcm/send", false, $context);
   }
 ?>
 
