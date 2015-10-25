@@ -1,7 +1,7 @@
 <?php
   include("common.php");
-  header("Content-Type:application/json");
-  $receivedRequest = urlArrayDecode($_POST);
+  // header("Content-Type:application/json");
+  $receivedRequest = ($_POST);
   $result = array();
 
   if($receivedRequest['action'] === "listAllTag"){
@@ -21,7 +21,8 @@
     $userID = $receivedRequest['userID'];
     mysqli_query($con, "DELETE FROM taglist WHERE userID='$userID'");  
     foreach ($receivedRequest['tags'] as $tagID) {
-      mysqli_query($con, "INSERT INTO taglist (userID,tagID) VALUES ('$userID','$tagID')");  
+      mysqli_query($con, "INSERT INTO taglist (userID,tagID) VALUES ('$userID','$tagID')");
+      mysqli_query($con, "INSERT INTO feed (userID, eventID) SELECT '$userID',id FROM events WHERE tagID='$tagID'");
     }
     $result['message'] = "success";
     echo json_encode($result);
