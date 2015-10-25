@@ -7,6 +7,13 @@
     return $con;
   }
 
+  function urlArrayDecode($inputArray){
+    foreach ($inputArray as $key => $value) {
+        $inputArray[$key] = urldecode($inputArray[$key]);
+    }
+    return $inputArray;
+  }
+
   function pushGCM($eventID,$title,$tagID,$posterID){
     $msg = array(
             'eventID' => $eventID,

@@ -1,7 +1,7 @@
 <?php
   include("common.php");
   header("Content-Type:application/json");
-  $receivedRequest = $_POST;
+  $receivedRequest = urlArrayDecode($_POST);
   $result = array();
 
   if($receivedRequest['action'] === "listAllTag"){
