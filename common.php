@@ -7,11 +7,12 @@
     return $con;
   }
 
-  function pushGCM($eventID,$title,$tagID){
+  function pushGCM($eventID,$title,$tagID,$posterID){
     $msg = array(
             'eventID' => $eventID,
             'title' => $title,
-            'tagID' => $tagID
+            'tagID' => $tagID,
+            'posterID' => $posterID
         );
     $fields = array(
         'to' => "/topics/tagID".$tagID,
